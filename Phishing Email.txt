@@ -1,0 +1,12 @@
+Subject: Urgent: Your Bank Account Has Been Compromised
+
+Dear Amy,
+
+We have reason to believe that your bank account has been compromised by an unauthorized third party. To protect your account, please click on the link below to verify your information.
+
+http://www.fakebank.com/verify
+
+If you do not verify your information within the next 24 hours, your account will be suspended.
+
+Sincerely,
+fakebank
