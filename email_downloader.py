@@ -40,30 +40,33 @@ def get_emails():
     list_cmd = "LIST\r\n"
     print(list_cmd)
     clientSocket.send(list_cmd.encode())
-    recv_list = clientSocket.recv(1024)
-    print(recv_list.decode())
+    recv_list = clientSocket.recv(1024).decode()
+    print(recv_list)
 
-    index = input("Enter the index of the email you want to read or say stop: ")
+    # Extracting last index from LIST response
+    last_index = int(recv_list.split()[1])
 
-    retr = f"RETR {index}\r\n"
-    print(retr)
-    clientSocket.send(retr.encode())
+    # Iterating from 1 to last index
+    for index in range(1, last_index + 1):
+        retr = f"RETR {index}\r\n"
+        print(retr)
+        clientSocket.send(retr.encode())
 
-    mail = b""
-    while True:
-        part = clientSocket.recv(1024)
-        mail += part
-        if part[-5:] == b"\r\n.\r\n":
-            break
+        mail = b""
+        while True:
+            part = clientSocket.recv(1024)
+            mail += part
+            if part[-5:] == b"\r\n.\r\n":
+                break
         
-    mail = mail.decode()
+        mail = mail.decode()
 
-    filename = f"email_{index}.txt"
-    with open(filename, 'w') as file:
-        file.write(mail)
+        filename = f"email_{index}.txt"
+        with open(filename, 'w') as file:
+            file.write(mail)
 
-    print(f"Email {index} saved to {filename}")
-        
+        print(f"Email {index} saved to {filename}")
+
     quit_cmd = "QUIT\r\n"
     clientSocket.send(quit_cmd.encode())
     recv_quit = clientSocket.recv(1024)
